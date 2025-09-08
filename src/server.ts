@@ -1,18 +1,18 @@
+/* eslint-disable no-console */
 import { Server } from "http";
 import mongoose from "mongoose";
 import app from "./app";
+import { envVariabls } from "./app/config/env";
 
 let server: Server;
 
 
-
 const startServer = async () => {
+  console.log(envVariabls.NODE_ENV);
   try {
-    await mongoose.connect(
-      "mongodb+srv://library:MDriadhossen@cluster0.b18k8.mongodb.net/TourManage?retryWrites=true&w=majority&appName=Cluster0"
-    );
+    await mongoose.connect(envVariabls.DB_URL);
     console.log("connected to db");
-    server =app.listen(5000, () => {
+    server =app.listen(envVariabls.PORT, () => {
       console.log("sercer is running or 5000");
     });
   } catch (error) {
