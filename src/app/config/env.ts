@@ -3,14 +3,25 @@ import dotenv from "dotenv";
 dotenv.config();
 
 interface EnvConfic{
-     PORT : string,
+    PORT : string,
     DB_URL : string,
     NODE_ENV : "development" | "production",
-
+    BCRYPT_SALT_ROUND : string,
+    JWT_ACCESS_EXPIRES: string,
+    JWT_ACCESS_SECET: string,
+    SUPER_ADMIN_PASSWORD:string,
+    SUPER_ADMIN_EMAIL: string,
+    JWT_REFRESH_EXPIRES: string,
+    JWR_REFRESH_SECRET: string,
+    FRONTENT_URL: string,
+    EXPRESS_SESSION_SECRET : string,
+    GOOGLE_CALLBACK_URL: string,
+    GOOGLE_CLIENT_SECRET: string,
+    GOOGLE_CLIENT_ID : string,
 }
 
 const loadEnvvariables = () : EnvConfic=>{
-    const rquiredEnv : string[]=['PORT','DB_URL','NODE_ENV'];
+    const rquiredEnv : string[]=['PORT','DB_URL','NODE_ENV','BCRYPT_SALT_ROUND','JWT_ACCESS_EXPIRES','JWT_ACCESS_SECET','SUPER_ADMIN_EMAIL','JWT_REFRESH_EXPIRES','SUPER_ADMIN_PASSWORD','JWR_REFRESH_SECRET','GOOGLE_CLIENT_ID','GOOGLE_CLIENT_SECRET','GOOGLE_CALLBACK_URL','EXPRESS_SESSION_SECRET','FRONTENT_URL'];
 
     rquiredEnv.forEach(key =>{
         if(!process.env[key]){
@@ -21,6 +32,18 @@ const loadEnvvariables = () : EnvConfic=>{
     PORT : process.env.PORT as string,
     DB_URL : process.env.DB_URL as string,
     NODE_ENV : process.env.NODE_ENV  as "development" | "production",
+    BCRYPT_SALT_ROUND :  process.env.BCRYPT_SALT_ROUND as string,
+    JWT_ACCESS_SECET : process.env.JWT_ACCESS_SECET as string,
+    JWT_ACCESS_EXPIRES : process.env.JWT_ACCESS_EXPIRES as string,
+    SUPER_ADMIN_PASSWORD : process.env.SUPER_ADMIN_PASSWORD as string,
+    SUPER_ADMIN_EMAIL: process.env.SUPER_ADMIN_EMAIL as string,
+    JWR_REFRESH_SECRET : process.env.JWR_REFRESH_SECRET as string,
+    JWT_REFRESH_EXPIRES: process.env.JWT_REFRESH_EXPIRES as string,
+    GOOGLE_CLIENT_ID : process.env.GOOGLE_CLIENT_ID as string,
+    GOOGLE_CLIENT_SECRET : process.env.GOOGLE_CLIENT_SECRET as string,
+    GOOGLE_CALLBACK_URL : process.env.GOOGLE_CALLBACK_URL as string,
+    EXPRESS_SESSION_SECRET : process.env.EXPRESS_SESSION_SECRET as string,
+    FRONTENT_URL : process.env.FRONTENT_URL as string,
 }
 }
 
