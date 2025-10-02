@@ -6,6 +6,10 @@ import httpStatus from "http-status-codes";
 import { AuthService } from "./auth.service";
 import AppError from "../../errorHelpers/appError";
 import { setAuthCookie } from "../../utils/setCookie";
+import { JwtPayload } from "jsonwebtoken";
+import { CreateuserTokens } from "../../utils/UserToken";
+import { envVariabls } from "../../config/env";
+
 
 const credentialsLogin = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -91,9 +95,16 @@ const logout =async (req: Request, res: Response, next: NextFunction)=>{
 
 
 const resetPassword = async(req: Request, res: Response, next: NextFunction) =>{
-  const decodedToken = req.user ;
+  const decodedToken = req.user as JwtPayload | undefined;
   const newpassword = req.body.newpassword;
   const oldpassword = req.body.oldpassword;
+
+  if (!decodedToken) {
+    return res.status(httpStatus.UNAUTHORIZED).json({
+      success: false,
+      message: "Unauthorized",
+    });
+  }
 
   await  AuthService.resetPassword(oldpassword,newpassword,decodedToken)
 
@@ -109,10 +120,32 @@ const resetPassword = async(req: Request, res: Response, next: NextFunction) =>{
 }
 
 
+const googleCallback =async(req : Request , res : Response , next : NextFunction)=>{
+
+  let state = req.query.state ? req.query.state as string : ""
+  if(state.startsWith("/")){
+    state = state.slice(1);
+  }
+
+  const user = req.user;
+
+  if(!user){
+    throw new AppError(httpStatus.NOT_FOUND , "User Not Fount");
+  }
+
+  const TokenInfo =  CreateuserTokens(user)
+
+  setAuthCookie(res ,TokenInfo)
+
+  res.redirect(`${envVariabls.FRONTENT_URL}/${state}`);
+}
+
+
 
 export const AuthControllers = {
     credentialsLogin,
     getNewAccessToken,
     logout,
-    resetPassword
+    resetPassword,
+    googleCallback
 }

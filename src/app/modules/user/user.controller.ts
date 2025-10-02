@@ -59,7 +59,7 @@ const updateUser = catchAsync(
     // const token = req.headers.authorization;
     // const verifidToken = verifyToken(token as string ,envVariabls.BCRYPT_SALT_ROUND) as JwtPayload;
     const verifidToken = req.user ;
-    const user = await UserServies.updateUser(userid,req.body ,verifidToken);
+    const user = await UserServies.updateUser(userid,req.body ,verifidToken as JwtPayload);
     sendResponse(res , {
         statusCode : httpStatus.CREATED,
         message: "user update success",
