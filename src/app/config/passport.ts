@@ -13,12 +13,23 @@ passport.use(
     new LocalStrategy({
         usernameField : "email",
         passwordField : "password"
-    },async(email : string , password : string , done : VerifyCallback)=>{
+    },async(email : string , password : string , done :any)=>{
         try {
 
             const ifUserexist = await User.findOne({email})
             if(!ifUserexist){
-              return done(null , false , {message : "user nt exist"});
+              return done("user not exist");
+            }
+
+            const isGoogleAuthenticated = ifUserexist.auth.some(providerObject => providerObject.provider == "google")
+
+            // if(isGoogleAuthenticated){
+            //     console.log("err")
+            //     return done(null , false , {message: "you have authentiated Google"})
+            // }
+            if(isGoogleAuthenticated && !ifUserexist.password){
+                console.log("err")
+                return done("you have authentiated Google");
             }
 
             const ifPassword = await bcryptjs.compare(password as string , ifUserexist.password as string);

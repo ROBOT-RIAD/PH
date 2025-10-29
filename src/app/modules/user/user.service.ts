@@ -11,6 +11,7 @@ const createUserService = async (payload: Partial<IUser>) => {
   const { email, password, ...rest } = payload;
 
   const ifUserexist = await User.findOne({ email });
+
   if (ifUserexist) {
     throw new AppError(httpStatus.BAD_REQUEST, "user Already exist ");
   }
