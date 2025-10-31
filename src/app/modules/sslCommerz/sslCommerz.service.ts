@@ -1,18 +1,24 @@
+/* eslint-disable no-console */
+import { envVariabls } from "../../config/env";
+import AppError from "../../errorHelpers/appError";
+import { ISSLCommerz } from "./sslCommerz.interface";
+import httpStatus from "http-status-codes";
 
+import axios from "axios";
 
 
 const sslPaymentInit = async (payload: ISSLCommerz) => {
 
     try {
         const data = {
-            store_id: envVars.SSL.STORE_ID,
-            store_passwd: envVars.SSL.STORE_PASS,
+            store_id: envVariabls.SSL.STORE_ID,
+            store_passwd: envVariabls.SSL.STORE_PASS,
             total_amount: payload.amount,
             currency: "BDT",
             tran_id: payload.transactionId,
-            success_url: `${envVars.SSL.SSL_SUCCESS_BACKEND_URL}?transactionId=${payload.transactionId}&amount=${payload.amount}&status=success`,
-            fail_url: `${envVars.SSL.SSL_FAIL_BACKEND_URL}?transactionId=${payload.transactionId}&amount=${payload.amount}&status=fail`,
-            cancel_url: `${envVars.SSL.SSL_CANCEL_BACKEND_URL}?transactionId=${payload.transactionId}&amount=${payload.amount}&status=cancel`,
+            success_url: `${envVariabls.SSL.SSL_SUCCESS_BACKEND_URL}?transactionId=${payload.transactionId}&amount=${payload.amount}&status=success`,
+            fail_url: `${envVariabls.SSL.SSL_FAIL_BACKEND_URL}?transactionId=${payload.transactionId}&amount=${payload.amount}&status=fail`,
+            cancel_url: `${envVariabls.SSL.SSL_CANCEL_BACKEND_URL}?transactionId=${payload.transactionId}&amount=${payload.amount}&status=cancel`,
             // ipn_url: "http://localhost:3030/ipn",
             shipping_method: "N/A",
             product_name: "Tour",
@@ -39,7 +45,7 @@ const sslPaymentInit = async (payload: ISSLCommerz) => {
 
         const response = await axios({
             method: "POST",
-            url: envVars.SSL.SSL_PAYMENT_API,
+            url: envVariabls.SSL.SSL_PAYMENT_API,
             data: data,
             headers: { "Content-Type": "application/x-www-form-urlencoded" }
         })

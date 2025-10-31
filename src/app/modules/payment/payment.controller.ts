@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
-import { envVars } from "../../config/env";
 import { catchAsync } from "../../utils/catchAsync";
-import { sendResponse } from "../../utils/sendResponse";
+import sendResponse from "../../utils/sendresponse";
 import { PaymentService } from "./payment.service";
+import { envVariabls } from "../../config/env";
+
 
 const initPayment = catchAsync(async (req: Request, res: Response) => {
     const bookingId = req.params.bookingId;
@@ -19,7 +20,7 @@ const successPayment = catchAsync(async (req: Request, res: Response) => {
     const result = await PaymentService.successPayment(query as Record<string, string>)
 
     if (result.success) {
-        res.redirect(`${envVars.SSL.SSL_SUCCESS_FRONTEND_URL}?transactionId=${query.transactionId}&message=${result.message}&amount=${query.amount}&status=${query.status}`)
+        res.redirect(`${envVariabls.SSL.SSL_SUCCESS_FRONTEND_URL}?transactionId=${query.transactionId}&message=${result.message}&amount=${query.amount}&status=${query.status}`)
     }
 });
 const failPayment = catchAsync(async (req: Request, res: Response) => {
@@ -27,7 +28,7 @@ const failPayment = catchAsync(async (req: Request, res: Response) => {
     const result = await PaymentService.failPayment(query as Record<string, string>)
 
     if (!result.success) {
-        res.redirect(`${envVars.SSL.SSL_FAIL_FRONTEND_URL}?transactionId=${query.transactionId}&message=${result.message}&amount=${query.amount}&status=${query.status}`)
+        res.redirect(`${envVariabls.SSL.SSL_FAIL_FRONTEND_URL}?transactionId=${query.transactionId}&message=${result.message}&amount=${query.amount}&status=${query.status}`)
     }
 });
 const cancelPayment = catchAsync(async (req: Request, res: Response) => {
@@ -35,7 +36,7 @@ const cancelPayment = catchAsync(async (req: Request, res: Response) => {
     const result = await PaymentService.cancelPayment(query as Record<string, string>)
 
     if (!result.success) {
-        res.redirect(`${envVars.SSL.SSL_CANCEL_FRONTEND_URL}?transactionId=${query.transactionId}&message=${result.message}&amount=${query.amount}&status=${query.status}`)
+        res.redirect(`${envVariabls.SSL.SSL_CANCEL_FRONTEND_URL}?transactionId=${query.transactionId}&message=${result.message}&amount=${query.amount}&status=${query.status}`)
     }
 });
 
